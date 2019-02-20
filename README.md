@@ -13,7 +13,7 @@ On both a federal and international level, we spend a lot of money on [complianc
 
 ## Research
 
-First, I needed to find the companies that had actually committed fraud. I did this by combing through the Securities and Exchange Commission's (SEC) [Press Releases](https://www.sec.gov/news/pressreleases) for the last 5 years to gather a list of 25 companies that had been accused of fraud by the SEC. There, I had access to the SEC orders which specified which financial statements were deemed fraudulent, when they had previously been filed, and the companies' CIK numbers (a unique identifier assigned each corporation).
+First, I needed to find the companies that had actually committed fraud. I did this by combing through the Securities and Exchange Commission's (SEC) [Press Releases](https://www.sec.gov/news/pressreleases) for the last 5 years to gather a list of 25 companies that had been accused of fraud by the SEC. There, I had access to the SEC orders that specified which financial statements were deemed fraudulent, when they had previously been filed, and the companies' CIK numbers (a unique identifier assigned to each corporation).
 
 ## Dataset
 
@@ -25,7 +25,7 @@ Then, I downloaded the [Financial Statement Data Sets](https://www.sec.gov/dera/
 
 ## Feature Engineering
 
-1. Once I had my dataset, I added [Benford's Law](https://medium.com/@erika.russi/benny-and-the-di-gits-e6bb9f40c552) as my first feature. Benford's Law is the "Mathematical theory of leading digits. Specifically, in data sets, the leading digit(s) is (are) distributed in a specific, nonuniform way." If a company had committed fraud, then the counts of leading digits from their financial statements should stray from the theoretical numbers, and when graphing the numbers, it appeared to be the case:
+1. Once I had my dataset, I added [Benford's Law](https://medium.com/@erika.russi/benny-and-the-di-gits-e6bb9f40c552) as my first feature. Benford's Law is the "Mathematical theory of leading digits. Specifically, in data sets, the leading digits are distributed in a specific, nonuniform way." If a company had committed fraud, then the counts of leading digits from their financial statements should stray from the theoretical numbers, and when graphing the numbers, it appeared to be the case:
 
 <p align="center">
 <img width="800" alt="Benford's Law" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/benford_frauds.png">
@@ -38,17 +38,17 @@ I used the [Kullback–Leibler divergence](https://en.wikipedia.org/wiki/Kullbac
 <img width="1000" alt="Fin Statement" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/fin_statement.png">
 
 
-3. Next, I added financial ratios typically used by forensic accountants to detect fraud. I also included the [Total Accruals to Total Assets (TATA)](https://www.gmtresearch.com/beneishs-m-score/) and Asset Quality Index (AQI) ratios. 
+3. Finally, I added financial ratios typically used by forensic accountants to detect fraud. I also included the [Total Accruals to Total Assets (TATA)](https://www.gmtresearch.com/beneishs-m-score/) and Asset Quality Index (AQI) ratios. 
 
 <p align="center">
 <img width="1000" alt="Finratios" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/finratios.png">
 
 ## Feature Selection
 
-Once completed, I had added 28 features to my dataset. However, with the use of financial ratios and their potentially high correlation to related features -- such as the account statement tags -- I needed to remove overly correlated variables to avoid an overfit model. I dropped features with correlation greater than .7 and had 21 features remaining.
+Once completed, I had added 28 features to my dataset. However, with the use of financial ratios and their potentially high correlation to related features, such as the account statement tags, I needed to remove overly correlated variables to avoid an overfit model. I dropped features with correlation greater than .7 and had 21 features remaining.
 
 <p align="center">
-<img width="1000" alt="correlation" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/correlationmap.png">
+<img width="800" alt="correlation" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/correlationmap.png">
     
 
 ## Modeling and Results
@@ -56,15 +56,23 @@ Once completed, I had added 28 features to my dataset. However, with the use of 
 In order to find the best model and its parameters, I used [TPOT](https://epistasislab.github.io/tpot/using/), an automated machine learning algorithm. After running several iterations with different generation numbers, population sizes, and k-fold cross-validation amounts, TPOT optimized the best model as a Gradient Boosting Classifier.
 
 Compared to the baseline Dummy Classifier model, the Gradient Boosting Model was very successful.
-<img width="500" alt="results" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/results.png">
-<img width="500" alt="auc" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/auc.png">
+<p align="center">
+<img width="800" alt="results" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/results.png">
+<p align="center">
+<img width="800" alt="auc" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/auc.png">
 
 
 ## Most Important Features and Graphs
 
 The most important features used to distinguish between fraudulent and non-fraudulent filings were the Length of the Financial Statement and the KL Divergence from Benford's Law.
+<p align="center">
+<img width="800" alt="importance" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/importance.png">
 
+<p align="center">
+<img width="800" alt="top3" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/top3features.png">
 
+<p align="center">
+<img width="800" alt="3finratios" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/3finratios.png">
 
 
 
