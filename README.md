@@ -8,8 +8,8 @@ I built a Machine Learning model to detect accounting fraud. My model achieved i
 
 ## Motivation
 
-As an accountant, there is so much compliance and regulation you have to comply with in an effort to reduce fraud. But companies and executives continue to commit fraud. This is an excellent opportunity to introduce data science into the mix because it would remove the human element and potentially could be used as 
-Sarbanes oxley, enron
+On both a federal and international level, we spend a lot of money on [compliance costs,](https://www.investopedia.com/terms/c/compliance-cost.asp) including adherence to anti-fraud regulation, such as the [Sarbanes-Oxley Act of 2002](https://www.thebalance.com/sarbanes-oxley-act-of-2002-3306254). Despite all the regulation put in place to disincentivize fraud, companies and executives continue to commit accounting fraud. I wanted to introduce machine learning to this continuing issue as a first measure to catch potential fraud and therefore be a possible deterrent to it.
+
 
 ## Research
 
@@ -19,12 +19,28 @@ First, I needed to find the companies that had actually committed fraud. I did t
 
 Then, I downloaded the [Financial Statement Data Sets](https://www.sec.gov/dera/data/financial-statement-data-sets.html) containing the above mentioned fraudulent filings as well as some non-fraudulent filings.
 
+# add pandas img
 
-### Feature Engineering
 
-Once I had my datasets, I added [Benford's Law] (https://medium.com/@erika.russi/benny-and-the-di-gits-e6bb9f40c552) as my first feature. Benford's Law is the "Mathematical theory of leading digits. Specifically, in data sets, the leading digit(s) is (are) distributed in a specific, nonuniform way." 
+## Feature Engineering
+
+1. Once I had my datasets, I added [Benford's Law](https://medium.com/@erika.russi/benny-and-the-di-gits-e6bb9f40c552) as my first feature. Benford's Law is the "Mathematical theory of leading digits. Specifically, in data sets, the leading digit(s) is (are) distributed in a specific, nonuniform way." If a company had committed fraud, then the counts of leading digits from their financial statements should stray from the theoretical numbers, and when graphing the numbers, it appeared to be the case:
+
+# add benford frauds img
 <p align="center">
 <img width="500" alt="Benford's Law" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/benford_theory.jpeg">
+    
+I used the [Kullback–Leibler divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) as a measurement of how much a company's filing actually strayed from Benford's Law.
+
+2. The next features I wanted to include were tags used within the financial statements. I bucketed common tags/account names listed on financial statements using repeating patterns. For instance, if the phrase "Accounts Receivable" occured in the Balance Sheet, it should be tagged as such even if it read "Trade accounts receivable, net". I found common tags across three financial statements: Balance Sheet, Income Statement, and Statement of Cash flows
+
+
+# add fin statement
+
+3. Next, I added financial ratios typically used by forensic accountants to detect fraud.
+
+
+
 
 
 
