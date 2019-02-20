@@ -23,7 +23,8 @@ Then, I downloaded the [Financial Statement Data Sets](https://www.sec.gov/dera/
 ### Feature Engineering
 
 Once I had my datasets, I added [Benford's Law] (https://medium.com/@erika.russi/benny-and-the-di-gits-e6bb9f40c552) as my first feature. Benford's Law is the "Mathematical theory of leading digits. Specifically, in data sets, the leading digit(s) is (are) distributed in a specific, nonuniform way." 
-<img width="454" alt="Benford's Law" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/benford_theory.jpeg">
+<p align="center">
+<img width="500" alt="Benford's Law" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/benford_theory.jpeg">
 
 
 
