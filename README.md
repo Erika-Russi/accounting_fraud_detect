@@ -68,7 +68,7 @@ The most important features used to distinguish between fraudulent and non-fraud
 <p align="center">
 <img width="800" alt="importance" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/importance.png">
 
-Here are the three most important features graphed:
+Here are important features graphed against each other:
 <p align="center">
 <img width="800" alt="top3" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/top3features.png">
 
