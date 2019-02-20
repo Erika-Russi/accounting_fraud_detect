@@ -17,7 +17,7 @@ First, I needed to find the companies that had actually committed fraud. I did t
 
 ## Dataset
 
-Then, I downloaded the [Financial Statement Data Sets](https://www.sec.gov/dera/data/financial-statement-data-sets.html) containing the above mentioned fraudulent filings as well as some non-fraudulent filings.
+Then, I downloaded the [Financial Statement Data Sets](https://www.sec.gov/dera/data/financial-statement-data-sets.html) containing the above mentioned fraudulent filings as well as some non-fraudulent filings. The number of rows associated with fraudulent filings were 739, compared with 5,069 associated with non-fraudulent filings.
 
 <p align="center">
 <img width="1000" alt="dataset" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/pandas.png">
@@ -25,22 +25,45 @@ Then, I downloaded the [Financial Statement Data Sets](https://www.sec.gov/dera/
 
 ## Feature Engineering
 
-1. Once I had my datasets, I added [Benford's Law](https://medium.com/@erika.russi/benny-and-the-di-gits-e6bb9f40c552) as my first feature. Benford's Law is the "Mathematical theory of leading digits. Specifically, in data sets, the leading digit(s) is (are) distributed in a specific, nonuniform way." If a company had committed fraud, then the counts of leading digits from their financial statements should stray from the theoretical numbers, and when graphing the numbers, it appeared to be the case:
+1. Once I had my dataset, I added [Benford's Law](https://medium.com/@erika.russi/benny-and-the-di-gits-e6bb9f40c552) as my first feature. Benford's Law is the "Mathematical theory of leading digits. Specifically, in data sets, the leading digit(s) is (are) distributed in a specific, nonuniform way." If a company had committed fraud, then the counts of leading digits from their financial statements should stray from the theoretical numbers, and when graphing the numbers, it appeared to be the case:
 
 <p align="center">
-<img width="1000" alt="Benford's Law" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/benford_frauds.png">
+<img width="800" alt="Benford's Law" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/benford_frauds.png">
     
 I used the [Kullback–Leibler divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) as a measurement of how much a company's filing actually strayed from Benford's Law.
 
-2. The next features I wanted to include were tags used within the financial statements. I bucketed common tags/account names listed on financial statements using repeating patterns. For instance, if the phrase "Accounts Receivable" occured in the Balance Sheet, it should be tagged as such even if it read "Trade accounts receivable, net". I found common tags across three financial statements: Balance Sheet, Income Statement, and Statement of Cash flows
+2. The next features I wanted to include were tags used within the financial statements. I bucketed common tags/account names listed on financial statements using repeating patterns. For instance, if the phrase "Accounts Receivable" occured in the Balance Sheet, it should be tagged as such even if it read "Trade accounts receivable, net". I found common tags across three financial statements: Balance Sheet, Income Statement, and Statement of Cash flows.
 
 <p align="center">
 <img width="1000" alt="Fin Statement" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/fin_statement.png">
 
 
-3. Next, I added financial ratios typically used by forensic accountants to detect fraud.
+3. Next, I added financial ratios typically used by forensic accountants to detect fraud. I also included the [Total Accruals to Total Assets (TATA)](https://www.gmtresearch.com/beneishs-m-score/) and Asset Quality Index (AQI) ratios. 
+
 <p align="center">
 <img width="1000" alt="Finratios" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/finratios.png">
+
+## Feature Selection
+
+Once completed, I had added 28 features to my dataset. However, with the use of financial ratios and their potentially high correlation to related features -- such as the account statement tags -- I needed to remove overly correlated variables to avoid an overfit model. I dropped features with correlation greater than .7 and had 21 features remaining.
+
+<p align="center">
+<img width="1000" alt="correlation" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/correlationmap.png">
+    
+
+## Modeling and Results
+
+In order to find the best model and its parameters, I used [TPOT](https://epistasislab.github.io/tpot/using/), an automated machine learning algorithm. After running several iterations with different generation numbers, population sizes, and k-fold cross-validation amounts, TPOT optimized the best model as a Gradient Boosting Classifier.
+
+Compared to the baseline Dummy Classifier model, the Gradient Boosting Model was very successful.
+<img width="500" alt="results" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/results.png">
+<img width="500" alt="auc" src="https://github.com/Erika-Russi/accounting_fraud_detect/blob/master/images/auc.png">
+
+
+## Most Important Features and Graphs
+
+The most important features used to distinguish between fraudulent and non-fraudulent filings were the Length of the Financial Statement and the KL Divergence from Benford's Law.
+
 
 
 
